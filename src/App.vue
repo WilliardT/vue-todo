@@ -1,26 +1,240 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <div class="todo">
+      <div class="todo__header">
+        <h4>Список задач</h4>
+      </div>
+      <TaskField @onAddTask="onAddTask" />
+      <div class="todo__list">
+        <ListItem
+          v-for="(task, index) in tasks"
+          :key="index"
+          :index="index"
+          :text="task.text"
+          :completed="task.completed"
+          @onTogleCompleted="onTogleCompleted"
+          @onRemoveTask="onRemoveTask"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ListItem from "./components/ListItem.vue";
+import TaskField from "./components/TaskField.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data: () => ({
+    tasks: [
+      {
+        text: "developed ToDo list",
+        completed: true,
+      },
+      {
+        text: "join to channel",
+        completed: false,
+      },
+    ],
+  }),
+  methods: {
+    onTogleCompleted(index) {
+      this.tasks[index].completed = !this.tasks[index].completed;
+    },
+    onRemoveTask(index) {
+      this.tasks.splice(index, 1);
+    },
+    onAddTask(text) {
+      this.tasks.push({
+        text,
+        completed: false,
+      });
+    },
+  },
   components: {
-    HelloWorld
-  }
-}
+    ListItem,
+    TaskField,
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  outline: none;
+  font-family: Roboto, system-ui, Tahoma, sans-serif;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  -webkit-font-smoothing: antialiased;
+}
+a,
+span,
+p,
+b,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #000;
+}
+h1 {
+  font-size: 48px;
+}
+h2 {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 30px;
+}
+a {
+  text-decoration: none;
+}
+body {
+  background-color: #fafafa;
+}
+.todo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 530px;
+  height: 500px;
+  background-color: #fff;
+  -webkit-box-shadow: 0px 9px 24px rgba(0, 0, 0, 0.01),
+    0px 25px 40px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 9px 24px rgba(0, 0, 0, 0.01),
+    0px 25px 40px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+}
+.todo__header {
+  background-color: #db4c3f;
+  padding: 20px 30px;
+}
+.todo__header h4 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 500;
+}
+.todo__add-field {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #f4f4f4;
+}
+.todo__add-field input {
+  border: 0;
+  font-size: 18px;
+  padding: 20px;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.todo__add-field input::-webkit-input-placeholder {
+  color: #bfbfbf;
+}
+.todo__add-field input:-ms-input-placeholder {
+  color: #bfbfbf;
+}
+.todo__add-field input::-ms-input-placeholder {
+  color: #bfbfbf;
+}
+.todo__add-field input::placeholder {
+  color: #bfbfbf;
+}
+.todo__add-field-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border: 0;
+  background-color: transparent;
+  width: 65px;
+  height: 65px;
+  cursor: pointer;
+}
+.todo__add-field-button svg {
+  position: relative;
+  right: -1px;
+}
+.todo__add-field-button:hover {
+  background-color: #fbfbfb;
+}
+.todo__add-field-button:hover svg path {
+  fill: #202020;
+}
+.todo__list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 20px;
+  border-bottom: 1px solid #f4f4f4;
+}
+.todo__list-item--completed {
+  text-decoration: line-through;
+}
+.todo__list-item--completed .todo__list-item-check svg {
+  display: block;
+}
+.todo__list-item--completed .todo__list-item-check,
+.todo__list-item--completed .todo__list-item-check:hover {
+  background-color: #db4c3f;
+}
+.todo__list-item-check {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border: 2px solid #db4c3f;
+  border-radius: 30px;
+  height: 24px;
+  width: 24px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.todo__list-item-check svg {
+  display: none;
+}
+.todo__list-item-check:hover {
+  background-color: #f8e0de;
+}
+.todo__list-item-remove:hover {
+  cursor: pointer;
+}
+.todo__list-item-remove:hover svg path {
+  fill: #202020;
+}
+.todo__list-item p {
+  font-size: 18px;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.todo__list {
+  overflow: auto;
+  height: calc(100% - 136px);
+  color: black;
 }
 </style>
