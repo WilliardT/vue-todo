@@ -1,7 +1,7 @@
 <template>
   <div
     class="todo__list-item"
-    v-bind:class="{ 'todo__list-item--completed': completed }"
+    :class="{ 'todo__list-item--completed': completed }"
   >
     <div @click="toggleCompleted(index)" class="todo__list-item-check">
       <svg
